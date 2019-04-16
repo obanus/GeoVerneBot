@@ -1,0 +1,22 @@
+{
+  "name": "mybot",
+  "version": "0.0.1",
+  "description": "twitter bot",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+"repository": {
+      "type": "git",
+      "url": "https://github.com/obanus/GeoVerneBot.git"
+    },
+  "author": "Olivier Banus",
+  "license": "GPLv3",
+  "dependencies": {
+    "tracery-grammar": "^2.7.4",
+    "twit": "^2.2.11"
+  },
+  "jshintConfig":{
+     "node": true
+  }
+}
