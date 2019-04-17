@@ -8,3 +8,7 @@ var fs = require('fs'),
 
 var T = new Twit(config),
     grammar = tracery.createGrammar(mainGrammar);
+
+function random_from_array(images) {
+    return images[Math.floor(Math.random() * images.length)];
+}
