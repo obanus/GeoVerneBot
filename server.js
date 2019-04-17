@@ -5,3 +5,6 @@ var fs = require('fs'),
     config = require(path.join(__dirname, 'config.js')),
     images = require(path.join(__dirname, 'images.js')),
     mainGrammar = require(path.join(__dirname, 'mainGrammar.js'));
+
+var T = new Twit(config),
+    grammar = tracery.createGrammar(mainGrammar);
