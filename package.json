@@ -6,17 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-"repository": {
-      "type": "git",
-      "url": "https://github.com/obanus/GeoVerneBot.git"
-    },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obanus/GeoVerneBot.git"
+  },
   "author": "Olivier Banus",
   "license": "GPLv3",
   "dependencies": {
+    "node-schedule": "^1.3.2",
     "tracery-grammar": "^2.7.4",
     "twit": "^2.2.11"
   },
-  "jshintConfig":{
-     "node": true
+  "jshintConfig": {
+    "node": true
   }
 }
