@@ -73,3 +73,5 @@ function tweetWithPicture(images) {
 var j = schedule.scheduleJob({hour: 15, minute: 30}, function () {
     tweetWithPicture(images);
 });
+
+console.log('GeoVerneBot, up and running');
