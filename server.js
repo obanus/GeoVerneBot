@@ -113,7 +113,7 @@ console.log('GeoVerneBot, up and running');
 stream.on('tweet', function (tweet) {
 grammar = tracery.createGrammar(mainGrammar);
     T.post('statuses/update', {
-         status: grammar.flatten('#phrase#'),
+         status: grammar.flatten('#reponse#'),
         in_reply_to_status_id: tweet.id_str
     }, function (err, data, response) {
         if (err) {
