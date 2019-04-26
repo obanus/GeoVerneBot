@@ -111,15 +111,18 @@ var j = schedule.scheduleJob({
 console.log('GeoVerneBot, up and running');
 
 stream.on('tweet', function (tweet) {
-grammar = tracery.createGrammar(mainGrammar);
-    T.post('statuses/update', {
-         status: grammar.flatten('#reponse#'),
-        in_reply_to_status_id: tweet.id_str
-    }, function (err, data, response) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('reply done');
-        }
-    });
+    // do not reply if original twit is home made
+    grammar = tracery.createGrammar(mainGrammar);
+    if (tweet.user.screen_name != config.screen_name) {
+        T.post('statuses/update', {
+            status: grammar.flatten('#reponse#'),
+            in_reply_to_status_id: tweet.id_str
+        }, function (err, data, response) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('reply done');
+            }
+        });
+    };
 });
