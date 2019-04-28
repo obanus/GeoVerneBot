@@ -22,25 +22,23 @@ function random_from_array(images) {
 
 //Build an array of tweeter accounts with past interactions with the bot hashtag
 function getFriends(hashtag) {
+    console.log('searching...');
     T.get('search/tweets', {
         q: hashtag,
         count: 1000,
         result_type: 'recent'
     }, function (err, data, response) {
-        if (!err) {
-            for (var i = 0; i < data.statuses.length; i++) {
-                // Get the tweet author names from the returned data
-                if (names.indexOf('@' + data.statuses[i].user.screen_name) < 0) names.push('@' + data.statuses[i].user.screen_name);
-            }
-            console.log(names);
-        } else {
-            console.log(err);
+    if (!err) {
+        for (var i = 0; i < data.statuses.length; i++) {
+            // Get the tweet author names from the returned data
+            if (names.indexOf('@' + data.statuses[i].user.screen_name) < 0) names.push('@' + data.statuses[i].user.screen_name);
         }
-    });
-
-    setTimeout(function () {
         mainGrammar.nom = names;
-    }, 40 * 1000);
+        console.log(names);
+    } else {
+        console.log(err);
+    }
+});
 }
 
 getFriends('#geovernebot');
