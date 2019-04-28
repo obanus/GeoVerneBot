@@ -39,7 +39,7 @@ function getFriends(hashtag) {
     });
 
     setTimeout(function () {
-        mainGrammar["nom"] = names;
+        mainGrammar.nom = names;
     }, 40 * 1000);
 }
 
@@ -124,5 +124,5 @@ stream.on('tweet', function (tweet) {
                 console.log('reply done');
             }
         });
-    };
+    }
 });
