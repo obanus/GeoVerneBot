@@ -28,17 +28,17 @@ function getFriends(hashtag) {
         count: 1000,
         result_type: 'recent'
     }, function (err, data, response) {
-    if (!err) {
-        for (var i = 0; i < data.statuses.length; i++) {
-            // Get the tweet author names from the returned data
-            if (names.indexOf('@' + data.statuses[i].user.screen_name) < 0) names.push('@' + data.statuses[i].user.screen_name);
+        if (!err) {
+            for (var i = 0; i < data.statuses.length; i++) {
+                // Get the tweet author names from the returned data
+                if (names.indexOf('@' + data.statuses[i].user.screen_name) < 0) names.push('@' + data.statuses[i].user.screen_name);
+            }
+            mainGrammar.nom = names;
+            console.log(names);
+        } else {
+            console.log(err);
         }
-        mainGrammar.nom = names;
-        console.log(names);
-    } else {
-        console.log(err);
-    }
-});
+    });
 }
 
 getFriends('#geovernebot');
@@ -111,7 +111,7 @@ console.log('GeoVerneBot, up and running');
 stream.on('tweet', function (tweet) {
     // do not reply if original twit is home made
     grammar = tracery.createGrammar(mainGrammar);
-    if (tweet.user.screen_name != config.screen_name) {
+    if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT') === false) {
         T.post('statuses/update', {
             status: grammar.flatten('#reponse#'),
             in_reply_to_status_id: tweet.id_str
@@ -120,6 +120,19 @@ stream.on('tweet', function (tweet) {
                 console.log(err);
             } else {
                 console.log('reply done');
+            }
+        });
+    }
+    if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
+        mainGrammar.nom = ['@' + tweet.user.screen_name];
+        T.post('statuses/update', {
+            status: grammar.flatten('#reponse#'),
+            in_reply_to_status_id: tweet.id_str
+        }, function (err, data, response) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('reply to RT done');
             }
         });
     }
