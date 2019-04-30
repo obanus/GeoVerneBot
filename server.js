@@ -16,6 +16,13 @@ var stream = T.stream('statuses/filter', {
     track: '#GeoVerneBot'
 });
 
+function IncludeSelectedUser(user, callback) {
+    mainGrammar.nom = [user];
+    grammar = tracery.createGrammar(mainGrammar);
+    console.log(mainGrammar.nom);
+    callback();
+}
+
 function random_from_array(images) {
     return images[Math.floor(Math.random() * images.length)];
 }
@@ -124,17 +131,17 @@ stream.on('tweet', function (tweet) {
         });
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
-        mainGrammar.nom = ['@' + tweet.user.screen_name];
-        grammar = tracery.createGrammar(mainGrammar);
-        T.post('statuses/update', {
-            status: grammar.flatten('#reponse#'),
-            in_reply_to_status_id: tweet.id_str
-        }, function (err, data, response) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('reply to RT done');
-            }
+        IncludeSelectedUser('@' + tweet.user.screen_name, function () {
+            T.post('statuses/update', {
+                status: grammar.flatten('#reponse#'),
+                in_reply_to_status_id: tweet.id_str
+            }, function (err, data, response) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('reply to RT done');
+                }
+            }); //end of post
         });
     }
 });
