@@ -125,6 +125,7 @@ stream.on('tweet', function (tweet) {
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
         mainGrammar.nom = ['@' + tweet.user.screen_name];
+        grammar = tracery.createGrammar(mainGrammar);
         T.post('statuses/update', {
             status: grammar.flatten('#reponse#'),
             in_reply_to_status_id: tweet.id_str
