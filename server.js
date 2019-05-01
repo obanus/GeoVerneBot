@@ -16,15 +16,15 @@ var stream = T.stream('statuses/filter', {
     track: '#GeoVerneBot'
 });
 
-function IncludeSelectedUser(user, callback) {
+function includeSelectedUser(user, callback) {
     mainGrammar.nom = [user];
     grammar = tracery.createGrammar(mainGrammar);
     console.log(mainGrammar.nom);
     callback();
 }
 
-function random_from_array(images) {
-    return images[Math.floor(Math.random() * images.length)];
+function randomFromArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
 }
 
 //Build an array of tweeter accounts with past interactions with the bot hashtag
@@ -51,20 +51,20 @@ function getFriends(hashtag) {
 getFriends('#geovernebot');
 
 //Main function
-function tweetWithPicture(images) {
+function tweetWithPicture(imgArray) {
     console.log('Opening an image...');
     //step 1 : select random image
-    var random_image = random_from_array(images),
-        image_path = path.join(__dirname, '/images/' + random_image.file),
-        b64content = fs.readFileSync(image_path, {
+    var randomImage = randomFromArray(imgArray),
+        imagePath = path.join(__dirname, '/images/' + randomImage.file),
+        b64Content = fs.readFileSync(imagePath, {
             encoding: 'base64'
         }),
-        altText = random_image.source;
+        altText = randomImage.source;
 
     console.log('Uploading an image...');
     //step 2 : upload image to Twitter's servers
     T.post('media/upload', {
-        media_data: b64content
+        media_data: b64Content
     }, function (err, data, response) {
         if (err) {
             console.log('ERROR:');
@@ -73,8 +73,8 @@ function tweetWithPicture(images) {
             console.log('Image uploaded!');
 
             var mediaIdStr = data.media_id_string,
-                altText = random_image.source,
-                meta_params = {
+                altText = randomImage.source,
+                params = {
                     media_id: mediaIdStr,
                     alt_text: {
                         text: altText
@@ -82,7 +82,7 @@ function tweetWithPicture(images) {
                 };
 
             // step 3 : add metadata to image
-            T.post('media/metadata/create', meta_params, function (err, data, response) {
+            T.post('media/metadata/create', params, function (err, data, response) {
                 console.log('Adding metadata...');
                 if (!err) {
                     //step 4 : post tweet
@@ -131,7 +131,7 @@ stream.on('tweet', function (tweet) {
         });
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
-        IncludeSelectedUser('@' + tweet.user.screen_name, function () {
+        includeSelectedUser('@' + tweet.user.screen_name, function () {
             T.post('statuses/update', {
                 status: grammar.flatten('#reponse#'),
                 in_reply_to_status_id: tweet.id_str
