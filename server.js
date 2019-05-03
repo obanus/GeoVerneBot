@@ -98,16 +98,7 @@ function tweetWithPicture(imgArray) {
                     T.post('statuses/update', {
                             status: grammar.flatten('#origin#'), // tracery result
                             media_ids: [mediaIdStr]
-                        },
-                        function (err, data, response) {
-                            if (err) {
-                                console.log('ERROR:');
-                                console.log(err);
-                            } else {
-                                console.log('Success : posted status with an image & altText !');
-                            }
-                        }
-                    );
+                        }, logErrorOrSuccess('posted status with an image & altText'));
                 }
             });
         }
