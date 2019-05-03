@@ -16,6 +16,14 @@ var stream = T.stream('statuses/filter', {
     track: '#GeoVerneBot'
 });
 
+function logErrorOrSuccess(err, data, response, msg) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log(msg);
+    }
+}
+
 function includeSelectedUser(user, callback) {
     mainGrammar.nom = [user];
     grammar = tracery.createGrammar(mainGrammar);
@@ -122,26 +130,14 @@ stream.on('tweet', function (tweet) {
         T.post('statuses/update', {
             status: grammar.flatten('#reponse#'),
             in_reply_to_status_id: tweet.id_str
-        }, function (err, data, response) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('reply done');
-            }
-        });
+        }, logErrorOrSuccess('reply to RT done successfully'));
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
         includeSelectedUser('@' + tweet.user.screen_name, function () {
             T.post('statuses/update', {
                 status: grammar.flatten('#reponse#'),
                 in_reply_to_status_id: tweet.id_str
-            }, function (err, data, response) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('reply to RT done');
-                }
-            }); //end of post
+            }, logErrorOrSuccess('reply to RT done successfully')); //end of post
         });
     }
 });
