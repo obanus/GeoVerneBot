@@ -9,7 +9,8 @@ var fs = require('fs'),
 
 var T = new Twit(config),
     grammar = tracery.createGrammar(mainGrammar),
-    names = [];
+    names = [],
+    replyText;
 
 //use Twitter stream API to track the hashtag (live)
 var stream = T.stream('statuses/filter', {
@@ -24,10 +25,11 @@ function logErrorOrSuccess(err, data, response, msg) {
     }
 }
 
-function includeSelectedUser(user, callback) {
-    mainGrammar.nom = [user];
+function includeSelectedUserInReply(user, callback) {
+    mainGrammar.nom = ['@' + user];
     grammar = tracery.createGrammar(mainGrammar);
-    console.log(mainGrammar.nom);
+    replyText = grammar.flatten('#reponse#');
+    console.log(replyText);
     callback();
 }
 
@@ -124,7 +126,7 @@ stream.on('tweet', function (tweet) {
         }, logErrorOrSuccess('reply to RT done successfully'));
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
-        includeSelectedUser('@' + tweet.user.screen_name, function () {
+        includeSelectedUserInReply('@' + tweet.user.screen_name, function () {
             T.post('statuses/update', {
                 status: grammar.flatten('#reponse#'),
                 in_reply_to_status_id: tweet.id_str
