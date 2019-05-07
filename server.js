@@ -134,11 +134,6 @@ stream.on('tweet', function (tweet) {
         }, logErrorOrSuccess('reply to RT done successfully'));
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
-        includeSelectedUserInReply('@' + tweet.user.screen_name, function () {
-            T.post('statuses/update', {
-                status: grammar.flatten('#reponse#'),
-                in_reply_to_status_id: tweet.id_str
-            }, logErrorOrSuccess('reply to RT done successfully')); //end of post
-        });
+        includeSelectedUserInReply(tweet.user.screen_name, postRewteetReply.bind(replyText, tweet.id_str));
     }
 });
