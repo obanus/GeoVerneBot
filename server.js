@@ -33,10 +33,10 @@ function includeSelectedUserInReply(user, callback) {
     callback();
 }
 
-function postRewteetReply(idStrToReply) {
+function postRewteetReply(text,idStrToReply) {
     console.log(idStrToReply);
     T.post('statuses/update', {
-        status: replyText,
+        status: text,
         in_reply_to_status_id: idStrToReply
     }, logErrorOrSuccess('reply to RT done'));
 }
