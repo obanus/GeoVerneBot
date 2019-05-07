@@ -128,10 +128,7 @@ stream.on('tweet', function (tweet) {
     // do not reply if original twit is home made
     grammar = tracery.createGrammar(mainGrammar);
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT') === false) {
-        T.post('statuses/update', {
-            status: grammar.flatten('#reponse#'),
-            in_reply_to_status_id: tweet.id_str
-        }, logErrorOrSuccess('reply to RT done successfully'));
+        postRewteetReply(grammar.flatten('#reponse#'),tweet.id_str);
     }
     if (tweet.user.screen_name != config.screen_name && tweet.text.startsWith('RT')) {
         includeSelectedUserInReply(tweet.user.screen_name, postRewteetReply.bind(replyText, tweet.id_str));
