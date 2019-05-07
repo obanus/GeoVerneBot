@@ -33,6 +33,14 @@ function includeSelectedUserInReply(user, callback) {
     callback();
 }
 
+function postRewteetReply(idStrToReply) {
+    console.log(idStrToReply);
+    T.post('statuses/update', {
+        status: replyText,
+        in_reply_to_status_id: idStrToReply
+    }, logErrorOrSuccess('reply to RT done'));
+}
+
 function randomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
